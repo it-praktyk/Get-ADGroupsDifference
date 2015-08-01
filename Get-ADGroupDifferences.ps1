@@ -2,17 +2,30 @@ Function Get-ADGroupDifferences {
     
 <#
     .SYNOPSIS
-    Function intended for comparing Active Directory group membership between given user and another (reference) user
+    PowerShell function intended to compare group membership for two Active Directory users
     
     .DESCRIPTION
-    Using this function you can compare groups membership for two users Active Directory users. The first is reference user, the second is compared with it.  
+    Using this function you can compare groups membership for two users Active Directory users. The first is reference user, the second is compared with it 
+    and as a result groups different for both users will be displayed.
   
     .PARAMETER ReferenceUser
-    SAMAccount name of user that are used as source for comparison
+    Active Directory user object used as source for comparison - reference user
+    
+    The acceptable values for this parameter are:
+    -- A Distinguished Name
+    -- A GUID (objectGUID)
+    -- A Security Identifier (objectSid)
+    -- A SAM Account Name (sAMAccountName)
   
     .PARAMETER User
-    SAMAccount name of user that group membership comparison will be performed
-  
+    Active Directory user object for which group membership comparison will be performed
+    
+    The acceptable values for this parameter are:
+    -- A Distinguished Name
+    -- A GUID (objectGUID)
+    -- A Security Identifier (objectSid)
+    -- A SAM Account Name (sAMAccountName)
+      
     .PARAMETER DomainName
     Active Directory domain name - NETBIOS or FQDN - if not given than current domain for logged user is used
     
@@ -58,7 +71,8 @@ Function Get-ADGroupDifferences {
     AUTHOR: Wojciech Sciesinski, wojciech[at]sciesinski[dot]net
     KEYWORDS: PowerShell, Active Directory, Groups
     VERSION HISTORY
-    0.3 - 2015-07-16 - The first version published on GitHub
+    0.3.0 - 2015-08-01 - The first version published on GitHub
+    0.3.1 - 2015-08-01 - Help updated
     
     LICENSE
     This function is licensed under The MIT License (MIT)
@@ -116,9 +130,9 @@ Function Get-ADGroupDifferences {
     
     PROCESS {
         
-        $ReferenceUserGroups = Get-AdUser $ReferenceUser -Properties memberof -server $DomainController | select memberof -ExpandProperty memberof
+        $ReferenceUserGroups = Get-ADUser -Identity $ReferenceUser -Properties memberof -server $DomainController | select memberof -ExpandProperty memberof
         
-        $CurrentUserGroups = $(get-aduser $User  -Properties memberof -server $DomainController | select memberof -ExpandProperty memberof)
+        $CurrentUserGroups = Get-ADUser -Identity $User  -Properties memberof -server $DomainController | select memberof -ExpandProperty memberof
         
         $Differences = @(Compare-Object -ReferenceObject $ReferenceUserGroups -DifferenceObject $CurrentUserGroups -IncludeEqual:$IncludeEqual)
         
