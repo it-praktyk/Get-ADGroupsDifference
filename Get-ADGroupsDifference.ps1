@@ -1,4 +1,4 @@
-Function Get-ADGroupDifferences {
+Function Get-ADGroupsDifference {
     
 <#
     .SYNOPSIS
@@ -30,8 +30,8 @@ Function Get-ADGroupDifferences {
     Active Directory domain name - NETBIOS or FQDN - if not given than current domain for logged user is used
     
     .PARAMETER IncludeEqual
-    If set to TRUE than also groups for which both users belong will be displayed
-      
+    If selected also groups for what both users belong will be returned
+     
     .EXAMPLE
     Get-ADGroupDifferences -ReferenceUser XXXX -User YYYY
     
@@ -73,19 +73,13 @@ Function Get-ADGroupDifferences {
     VERSION HISTORY
     0.3.0 - 2015-08-01 - The first version published on GitHub
     0.3.1 - 2015-08-01 - Help updated
+    0.4.0 - 2016-08-22 - Scenarios when evaluated accounts are not members of any group added, the function renamed from Get-ADGroupDifferences to Get-AdGroupsDifference
     
     LICENSE
+    Copyright (c) 2015-2016 Wojciech Sciesinski
     This function is licensed under The MIT License (MIT)
     Full license text: http://opensource.org/licenses/MIT
-    Copyright (c) 2015 Wojciech Sciesinski
     
-    DISCLAIMER
-    This script is provided AS IS without warranty of any kind. I disclaim all implied warranties including, without limitation,
-    any implied warranties of merchantability or of fitness for a particular purpose. The entire risk arising out of the use or
-    performance of the sample scripts and documentation remains with you. In no event shall I be liable for any damages whatsoever
-    (including, without limitation, damages for loss of business profits, business interruption, loss of business information,
-    or other pecuniary loss) arising out of the use of or inability to use the script or documentation. 
-   
   #>
     
     Param (
@@ -101,14 +95,14 @@ Function Get-ADGroupDifferences {
         [String]$DomainName,
         
         [parameter(Mandatory = $false)]
-        [bool]$IncludeEqual = $false
+        [Switch]$IncludeEqual
         
     )
     
     BEGIN {
         
         
-        if ((Get-Module -name 'ActiveDirectory' -ErrorAction SilentlyContinue) -eq $null) {
+        if ( $null -eq (Get-Module -name 'ActiveDirectory' -ErrorAction SilentlyContinue)) {
             
             Import-Module -Name 'ActiveDirectory' -ErrorAction Stop | Out-Null
             
@@ -130,11 +124,30 @@ Function Get-ADGroupDifferences {
     
     PROCESS {
         
-        $ReferenceUserGroups = Get-ADUser -Identity $ReferenceUser -Properties memberof -server $DomainController | select memberof -ExpandProperty memberof
+        $ReferenceUserGroups = Get-ADUser -Identity $ReferenceUser -Properties MemberOf -server $DomainController -ErrorAction Stop | Select-Object -Property MemberOf -ExpandProperty MemberOf
         
-        $CurrentUserGroups = Get-ADUser -Identity $User  -Properties memberof -server $DomainController | select memberof -ExpandProperty memberof
+        $ReferenceUserGroupsCount = ($ReferenceUserGroups | Measure-Object).Count
         
-        $Differences = @(Compare-Object -ReferenceObject $ReferenceUserGroups -DifferenceObject $CurrentUserGroups -IncludeEqual:$IncludeEqual)
+        $CurrentUserGroups = Get-ADUser -Identity $User -Properties MemberOf -server $DomainController -ErrorAction Stop | Select-Object -Property MemberOf -ExpandProperty MemberOf
+        
+        $CurrentUserGroupsCount = ($CurrentUserGroups | Measure-Object).Count
+        
+        If ($ReferenceUserGroupsCount -gt 0 -and $CurrentUserGroupsCount -gt 0) {
+            
+            $Differences = @(Compare-Object -ReferenceObject $ReferenceUserGroups -DifferenceObject $CurrentUserGroups -IncludeEqual:$($IncludeEqual.IsPresent))
+            
+        }
+        elseif ($ReferenceUserGroupsCount -gt 0) {
+            
+            
+            
+        }
+        elseif ($CurrentUserGroupsCount -gt 0) {
+            
+            
+            
+        }
+        
         
         ForEach ($Difference in $Differences) {
             
