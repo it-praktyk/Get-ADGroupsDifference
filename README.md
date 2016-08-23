@@ -4,9 +4,9 @@
 PowerShell function intended to compare group membership for two Active Directory users.
 
 ## DESCRIPTION
-Using this function you can compare groups membership for two users Active Directory users.
-The first is reference user, the second is compared with it and as a result groups different for both users will be displayed
-
+Using this function you can compare groups membership for two users Active Directory users.    
+The first is reference user, the second is compared with it and as the result groups different for both users will be displayed.
+	
 ## PARAMETERS  
 ### ReferenceUser
 Active Directory user object used as source for comparison - reference user
@@ -27,7 +27,7 @@ The acceptable values for this parameter are:
 -- A SAM Account Name (sAMAccountName)
 
 ### DomainName
-Active Directory domain name - NETBIOS or FQDN - if not given than current domain for logged user is used
+Active Directory domain name - NETBIOS or FQDN - if not given than current domain for logged user is used.
 
 ### IncludeEqual
 If used set to TRUE than also groups for which both users belong will be displayed. Default value is $False
@@ -83,4 +83,5 @@ Full license text: http://opensource.org/licenses/MIT
 ## VERSIONS HISTORY
 - 0.3.0 - 2015-08-01 - The first version published on GitHub
 - 0.3.1 - 2015-08-01 - Help updated
-- 0.4.0 - 2016-08-22 - Scenarios when evaluated accounts are not members of any group added, the function renamed from Get-ADGroupDifferences to Get-AdGroupsDifference
+- 0.4.0 - 2016-08-22 - Scenarios when evaluated accounts are not members of any group added partially, the function renamed from Get-ADGroupDifferences to Get-AdGroupsDifference
+- 0.4.1 - 2016-08-24 - Scenarios when evaluated accounts are not members of any group added partially, TODO added, help updated
