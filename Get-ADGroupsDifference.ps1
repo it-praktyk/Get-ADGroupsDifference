@@ -2,7 +2,7 @@ Function Get-ADGroupsDifference {
     
 <#
     .SYNOPSIS
-    PowerShell function intended to compare group membership for two Active Directory users
+    PowerShell function intended to compare group membership for two Active Directory users.
     
     .DESCRIPTION
     Using this function you can compare groups membership for two users Active Directory users.    
@@ -27,7 +27,7 @@ Function Get-ADGroupsDifference {
     -- A SAM Account Name (sAMAccountName)
       
     .PARAMETER DomainName
-    Active Directory domain name - NETBIOS or FQDN - if not given than current domain for logged user is used
+    Active Directory domain name - NETBIOS or FQDN - if not given than current domain for logged user is used.
     
     .PARAMETER IncludeEqual
     If selected also groups for what both users belong will be returned.
@@ -77,6 +77,7 @@ Function Get-ADGroupsDifference {
     - 0.4.0 - 2016-08-22 - Scenarios when evaluated accounts are not members of any group added partially,
                            the function renamed from Get-ADGroupDifferences to Get-AdGroupsDifference
     - 0.4.1 - 2016-08-24 - Scenarios when evaluated accounts are not members of any group added partially, TODO added, help updated
+    - 0.4.2 - 2016-09-07 - Error with returning groups corrected
     
     LICENSE
     Copyright (c) 2015-2016 Wojciech Sciesinski
@@ -138,7 +139,7 @@ Function Get-ADGroupsDifference {
             
             $CurrentUserObject = Get-ADUser -Identity $User -Properties MemberOf, PrimaryGroup -server $DomainController
             
-            $CurrentUserGroups = $CurrentUserObjectget | Select-Object -Property MemberOf -ExpandProperty MemberOf
+            $CurrentUserGroups = $CurrentUserObject | Select-Object -Property MemberOf -ExpandProperty MemberOf
             
         }
         

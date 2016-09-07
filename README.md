@@ -85,3 +85,4 @@ Full license text: http://opensource.org/licenses/MIT
 - 0.3.1 - 2015-08-01 - Help updated
 - 0.4.0 - 2016-08-22 - Scenarios when evaluated accounts are not members of any group added partially, the function renamed from Get-ADGroupDifferences to Get-AdGroupsDifference
 - 0.4.1 - 2016-08-24 - Scenarios when evaluated accounts are not members of any group added partially, TODO added, help updated
+- 0.4.2 - 2016-09-07 - Error with returning groups corrected
