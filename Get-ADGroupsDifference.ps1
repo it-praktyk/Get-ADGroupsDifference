@@ -152,7 +152,7 @@ Function Get-ADGroupsDifference {
 
             if ($null -eq $ReferenceUserGroups) {
 
-                $ReferrenceUserGroups = @()
+                $ReferenceUserGroups = @()
 
             }
             elseif ($null -eq $CurrentUserGroups) {
