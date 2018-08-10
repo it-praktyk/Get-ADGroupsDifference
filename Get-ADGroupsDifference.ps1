@@ -79,6 +79,7 @@ Function Get-ADGroupsDifference {
     - 0.4.1 - 2016-08-24 - Scenarios when evaluated accounts are not members of any group added partially, TODO added, help updated
     - 0.4.2 - 2016-09-07 - Error with returning groups corrected
     - 0.4.3 - 2018-01-05 - Trailing spaces removed
+    - 0.4.4 - 2018-08-09 - Mispelled variable name corrected - credits Ward Durossette
 
     LICENSE
     Copyright (c) 2015-2016 Wojciech Sciesinski
