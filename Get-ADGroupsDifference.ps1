@@ -76,10 +76,13 @@ Function Get-ADGroupsDifference {
     - 0.3.1 - 2015-08-01 - Help updated
     - 0.4.0 - 2016-08-22 - Scenarios when evaluated accounts are not members of any group added partially,
                            the function renamed from Get-ADGroupDifferences to Get-AdGroupsDifference
-    - 0.4.1 - 2016-08-24 - Scenarios when evaluated accounts are not members of any group added partially, TODO added, help updated
+    - 0.4.1 - 2016-08-24 - Scenarios when evaluated accounts are not members of any group added partially,
+                           TODO added, help updated
     - 0.4.2 - 2016-09-07 - Error with returning groups corrected
     - 0.4.3 - 2018-01-05 - Trailing spaces removed
     - 0.4.4 - 2018-08-09 - Mispelled variable name corrected - credits Ward Durossette
+    - 0.4.5 - 2018-08-10 - Add GroupName property and hide CN/DN paths by default to improve table formatting
+                           - credits Sebastian N. @megamorf
 
     LICENSE
     Copyright (c) 2015-2016 Wojciech Sciesinski
@@ -124,6 +127,14 @@ Function Get-ADGroupsDifference {
         [String]$DomainController = (Get-ADDomainController -DomainName $DomainName -Discover).HostName
 
         $Results = @()
+
+        # Define custom default view
+        $defaultDisplaySet = 'ReferenceUser', 'User', 'GroupName', 'SideIndicator', 'SideIndicatorName'
+
+        # Create the default property display set
+        $defaultDisplayPropertySet = New-Object System.Management.Automation.PSPropertySet(‘DefaultDisplayPropertySet’, [string[]]$defaultDisplaySet)
+
+        $PSStandardMembers = [System.Management.Automation.PSMemberInfo[]]@($defaultDisplayPropertySet)
 
     }
 
@@ -172,6 +183,8 @@ Function Get-ADGroupsDifference {
 
                 $Result | Add-Member -type 'NoteProperty' -name User -value $User
 
+                $Result | Add-Member -type 'NoteProperty' -name GroupName -value ($Difference.InputObject -replace '^CN=|,.*$')
+
                 $Result | Add-Member -type 'NoteProperty' -name GroupDistinguishedName -value $Difference.InputObject
 
                 $Result | Add-Member -type 'NoteProperty' -Name GroupCanonicalName -Value $(ConvertFrom-DN ($Difference.InputObject))
@@ -197,6 +210,10 @@ Function Get-ADGroupsDifference {
                     $Result | Add-Member -Type 'NoteProperty' -Name SidegIndicatorName -Value "Both users"
 
                 }
+
+                $Result.PSObject.TypeNames.Insert(0, 'ADUser.GroupDifferenceObject')
+
+                $Result | Add-Member MemberSet PSStandardMembers $PSStandardMembers
 
                 $Results += $Result
             }
