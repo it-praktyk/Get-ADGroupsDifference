@@ -37,22 +37,19 @@ Function Get-ADGroupsDifference {
 
     ReferenceUser          : XXXX
     User                   : YYYY
-    GroupDistinguishedName : CN=GroupA,OU=Groups NonSpecials,DC=domain,DC=local
-    GroupCanonicalName     : domain.local/Groups NonSpecials/GroupA
+    Group                  : GroupA
     SideIndicator          : 1
     SideIndicatorName      : Only User
 
     ReferenceUser          : XXXX
     User                   : YYYY
-    GroupDistinguishedName : CN=GroupB,OU=Groups NonSpecials,DC=domain,DC=local
-    GroupCanonicalName     : domain.local/Groups NonSpecials/GroupB
+    Group                  : GroupB
     SideIndicator          : -1
     SideIndicatorName      : Only ReferenceUser
 
     ReferenceUser          : XXXX
     User                   : YYYY
-    GroupDistinguishedName : CN=Group-007-License,OU=Groups Special,DC=domain,DC=local
-    GroupCanonicalName     : domain.local/Groups Special/Group-007-License
+    Group                  : Group-007-License
     SideIndicator          : -1
     SideIndicatorName      : Only ReferenceUser
 
@@ -83,6 +80,7 @@ Function Get-ADGroupsDifference {
     - 0.4.4 - 2018-08-09 - Mispelled variable name corrected - credits Ward Durossette
     - 0.4.5 - 2018-08-10 - Add GroupName property and hide CN/DN paths by default to improve table formatting
                            - credits Sebastian N. @megamorf
+    - 0.4.6 - 2018-08-11 - Help aligned to the v. 0.4.5
 
     LICENSE
     Copyright (c) 2015-2016 Wojciech Sciesinski
