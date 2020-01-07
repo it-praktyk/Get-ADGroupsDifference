@@ -85,7 +85,7 @@ KEYWORDS: PowerShell, Active Directory, Groups
 
 ## LICENSE
 
-Copyright (c) 2015-2018 Wojciech Sciesinski
+Copyright (c) 2015-2020 Wojciech Sciesinski
 
 This function is licensed under The MIT License (MIT)
 
@@ -99,7 +99,9 @@ The full license text: http://opensource.org/licenses/MIT
 - 0.4.1 - 2016-08-24 - Scenarios when evaluated accounts are not members of any group added partially, TODO added, help updated
 - 0.4.2 - 2016-09-07 - Error with returning groups corrected
 - 0.4.3 - 2018-01-05 - Trailing spaces removed
-- 0.4.4 - 2018-08-09 - Mispelled variable name corrected - credits Ward Durossette
+- 0.4.4 - 2018-08-09 - Misspelled variable name corrected - credits Ward Durossette
 - 0.4.5 - 2018-08-10 - Add GroupName property and hide CN/DN paths by default to improve table formatting
                        - credits Sebastian N. @megamorf
 - 0.4.6 - 2018-08-11 - Help aligned to the v. 0.4.5
+- 0.5.0 - 2020-01-07 - Misspelled returned property name corrected
+                       -  credits CClifton (at TechNet) and mpc0 (at GitHub)
